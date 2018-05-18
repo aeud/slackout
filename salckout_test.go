@@ -1,10 +1,11 @@
 package slackout
 
 import (
-	"fmt"
+	"log"
 	"testing"
 )
 
 func TestW(t *testing.T) {
-	fmt.Fprint(W, "test")
+	// log.SetOutput(W)
+	log.Println("test")
 }
