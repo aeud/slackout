@@ -3,6 +3,7 @@ package slackout
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -16,12 +17,14 @@ type Payload struct {
 
 type SlackOutput struct {
 	Endpoint string
-	Icon     string
 	Username string
+	Icon     string
 }
 
 var W = SlackOutput{
 	Endpoint: os.Getenv("SLACK_ENDPOINT"),
+	Username: os.Getenv("SLACK_USERNAME"),
+	Icon:     os.Getenv("SLACK_ICON"),
 }
 
 func init() {
@@ -34,7 +37,7 @@ func (s SlackOutput) Write(p []byte) (n int, err error) {
 	}
 	bs, err := json.Marshal(Payload{
 		Username: s.Username,
-		Text:     string(p),
+		Text:     fmt.Sprintf("```%s```", string(p)),
 		Icon:     s.Icon,
 	})
 	if err != nil {
