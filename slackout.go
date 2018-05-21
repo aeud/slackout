@@ -52,5 +52,5 @@ func (s SlackOutput) Write(p []byte) (n int, err error) {
 		return 0, err
 	}
 	http.Post(s.Endpoint, "application/json", bytes.NewReader(bs))
-	return 0, nil
+	return len(p), nil
 }
