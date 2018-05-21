@@ -36,11 +36,12 @@ func (s SlackOutput) Write(p []byte) (n int, err error) {
 		return os.Stdout.Write(p)
 	}
 	text := fmt.Sprintf("```%s```", string(p))
-	if s := os.Getenv("SLACK_JOB_NAME"); s != "" {
-		text = fmt.Sprintf("> job/%s\n%s", s, text)
-	}
+
 	if s := os.Getenv("HOSTNAME"); s != "" {
 		text = fmt.Sprintf("> po/%s\n%s", s, text)
+	}
+	if s := os.Getenv("SLACK_JOB_NAME"); s != "" {
+		text = fmt.Sprintf("> job/%s\n%s", s, text)
 	}
 	bs, err := json.Marshal(Payload{
 		Username: s.Username,
