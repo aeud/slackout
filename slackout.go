@@ -35,9 +35,13 @@ func (s SlackOutput) Write(p []byte) (n int, err error) {
 	if W.Endpoint == "" {
 		return os.Stdout.Write(p)
 	}
+	text := fmt.Sprintf("```%s```", string(p))
+	if os.Getenv("HOSTNAME") != "" {
+		text = fmt.Sprintf("> %s\n%s", os.Getenv("HOSTNAME"), text)
+	}
 	bs, err := json.Marshal(Payload{
 		Username: s.Username,
-		Text:     fmt.Sprintf("```%s```", string(p)),
+		Text:     text,
 		Icon:     s.Icon,
 	})
 	if err != nil {
